@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<equations>
+    <!-- Basic arithmetic equations -->
+    <equation>
+        <name>base_price</name>
+        <value>100</value>
+    </equation>
+    <equation>
+        <name>tax_rate</name>
+        <value>0.2</value>
+    </equation>
+    <equation>
+        <name>tax_amount</name>
+        <expression>base_price * tax_rate</expression>
+    </equation>
+    <equation>
+        <name>shipping</name>
+        <value>15</value>
+    </equation>
+    <equation>
+        <name>total</name>
+        <expression>base_price + tax_amount + shipping</expression>
+    </equation>
+    
+    <!-- More complex equations -->
+    <equation>
+        <name>x</name>
+        <value>5</value>
+    </equation>
+    <equation>
+        <name>y</name>
+        <value>3</value>
+    </equation>
+    <equation>
+        <name>z</name>
+        <expression>x * y + (x + y) / 2</expression>
+    </equation>
+    
+    <!-- Equations with multiple dependencies -->
+    <equation>
+        <name>a</name>
+        <value>10</value>
+    </equation>
+    <equation>
+        <name>b</name>
+        <expression>a * 2</expression>
+    </equation>
+    <equation>
+        <name>c</name>
+        <expression>a + b</expression>
+    </equation>
+    <equation>
+        <name>final</name>
+        <expression>c * (z + total)</expression>
+    </equation>
+</equations> 
