@@ -1,127 +1,113 @@
-# Equation Resolver
+# Bond Analytics Engine
 
-A Python-based equation resolver that handles complex dependencies between variables, supports asynchronous API calls, and allows importing equations from XML files.
+A flexible and extensible analytics engine for computing bond-related metrics using a declarative equation system.
 
 ## Features
 
-- **Dynamic Equation Resolution**: Resolves equations with complex dependencies in the correct order
-- **Multiple Variable Types**:
-  - Constant values
-  - Arithmetic expressions
-  - Asynchronous API calls
-- **XML Import**: Load equations from external XML configuration files
-- **Dependency Management**: Automatically detects and validates dependencies between variables
-- **Selective Resolution**: Resolve only specific variables and their dependencies
-- **Circular Dependency Detection**: Prevents infinite loops by detecting circular dependencies
+- Declarative equation system for defining bond analytics
+- Support for external API calls with simulated latency
+- Automatic dependency resolution and computation ordering
+- Circular dependency detection
+- Safe formula evaluation with restricted context
+- Support for basic mathematical operations
+- Comprehensive error handling and logging
 
 ## Installation
 
-1. Clone the repository
-2. Ensure you have Python 3.7+ installed
-3. No additional dependencies required (uses standard library only)
+```bash
+pip install -r requirements.txt
+```
 
 ## Usage
 
-### Basic Usage
+### Basic Example
 
 ```python
-import asyncio
-from equation_resolver import EquationResolver
+from analytics_engine import AnalyticsEngine, Bond
 
-async def main():
-    resolver = EquationResolver()
-    
-    # Add some equations
-    resolver.add_equation('x', 5)  # Constant
-    resolver.add_equation('y', 'x * 2')  # Expression
-    
-    # Resolve and print result
-    result = await resolver.resolve_variable('y')
-    print(f"y = {result}")  # Output: y = 10
+# Define equations
+equations = [
+    "yield = API(YIELD)",
+    "risk_free = API(RISK_FREE_RATE)",
+    "volatility = API(VOLATILITY)",
+    "spread = yield - risk_free",
+    "risk = volatility * 2"
+]
 
-asyncio.run(main())
+# Create bond instances
+bonds = [
+    Bond("BOND1", "20230601", 100.0),
+    Bond("BOND2", "20230601", 101.5),
+    Bond("BOND3", "20230601", 99.75)
+]
+
+# Initialize engine and compute analytics
+engine = AnalyticsEngine()
+engine.validate_equations(equations)
+engine.topological_sort()
+results = engine.compute_analytics(bonds, ["yield", "spread", "risk"])
 ```
 
-### XML Configuration
+### Equation Syntax
 
-Create an XML file with your equations:
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<equations>
-    <equation>
-        <name>base_price</name>
-        <value>100</value>
-    </equation>
-    <equation>
-        <name>tax_rate</name>
-        <value>0.2</value>
-    </equation>
-    <equation>
-        <name>total</name>
-        <expression>base_price * (1 + tax_rate)</expression>
-    </equation>
-</equations>
+Equations follow a simple format:
+```
+field_name = formula
 ```
 
-Load and use the XML configuration:
+Where:
+- `field_name`: The name of the computed field
+- `formula`: A mathematical expression that can include:
+  - Numbers (e.g., `2.5`)
+  - Variables (e.g., `yield`, `spread`)
+  - API calls (e.g., `API(YIELD)`)
+  - Basic operators (`+`, `-`, `*`, `/`)
+  - Parentheses for grouping
 
-```python
-resolver = EquationResolver()
-resolver.import_from_xml('equations.xml')
-result = await resolver.resolve_variable('total')
-```
+### Available API Calls
 
-### Async API Integration
+The engine includes mock implementations for the following API calls:
+- `API(YIELD)`: Returns yield based on bond price
+- `API(RISK_FREE_RATE)`: Returns a constant risk-free rate
+- `API(VOLATILITY)`: Returns volatility based on bond price
 
-```python
-# In api_functions.py
-async def get_exchange_rate():
-    # Make API call here
-    return 1.2
+## Error Handling
 
-# In your main code
-from api_functions import get_exchange_rate
+The engine provides detailed error messages for:
+- Invalid equation syntax
+- Missing dependencies
+- Circular dependencies
+- API call failures
+- Formula evaluation errors
 
-resolver.add_equation('exchange_rate', get_exchange_rate)
-resolver.add_equation('foreign_price', 'total * exchange_rate')
-```
+## Logging
 
-## Project Structure
+The engine uses Python's logging module to provide detailed information about:
+- Equation parsing
+- Dependency resolution
+- Computation progress
+- Error conditions
 
-- `equation_resolver.py`: Core equation resolver implementation
-- `xml_importer.py`: XML parsing functionality
-- `api_functions.py`: Async API call implementations
-- `main.py`: Example usage
-- `equations.xml`: Example equation configuration
+## Dependencies
 
-## Features in Detail
-
-### Variable Resolution
-
-The resolver handles three types of variables:
-1. **Constants**: Simple numeric or string values
-2. **Expressions**: Mathematical expressions using other variables
-3. **API Calls**: Asynchronous functions that fetch external data
-
-### Dependency Management
-
-- Automatically detects dependencies in expressions
-- Creates a dependency graph
-- Performs topological sorting to determine resolution order
-- Detects circular dependencies
-
-### Error Handling
-
-- Validates variable existence
-- Detects circular dependencies
-- Handles expression evaluation errors
-- Provides meaningful error messages
+- Python 3.7+
+- dataclasses
+- typing
+- logging
+- json
+- enum
+- time
+- collections
+- re
 
 ## Contributing
 
-Feel free to submit issues and enhancement requests!
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
-This project is open-source and available under the MIT License. 
+This project is licensed under the MIT License - see the LICENSE file for details. 
