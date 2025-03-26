@@ -1,0 +1,9 @@
+# Core dependencies
+python-dateutil>=2.8.2  # For date handling
+typing-extensions>=4.0.0  # For enhanced type hints
+
+# Development dependencies
+pytest>=7.0.0  # For testing
+black>=22.0.0  # For code formatting
+mypy>=0.900  # For type checking
+pylint>=2.15.0  # For code linting 

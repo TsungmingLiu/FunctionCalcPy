@@ -1,0 +1,16 @@
+{
+    "equations": [
+        "yield = API(YIELD)",
+        "risk_free = API(RISK_FREE_RATE)",
+        "volatility = API(VOLATILITY)",
+        "spread = yield - risk_free",
+        "risk = volatility * 2"
+    ],
+    "default_requested_fields": ["yield", "spread", "risk"],
+    "api_settings": {
+        "latency": 0.1,
+        "yield_multiplier": 0.05,
+        "risk_free_rate": 0.03,
+        "volatility_multiplier": 0.02
+    }
+} 
